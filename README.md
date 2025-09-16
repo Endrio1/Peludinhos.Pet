@@ -12,7 +12,6 @@ Este é o projeto de adoção de animais de estimação desenvolvido como parte 
 
 - **Listagem de Animais:** Navegue por uma galeria de animais disponíveis para adoção, com fotos e informações detalhadas.
 - **Perfis Detalhados:** Cada animal possui um perfil completo com sua história, características, necessidades especiais e informações de contato para adoção.
-- **Filtros de Busca:** Encontre o pet ideal utilizando filtros por espécie, raça, idade, porte e localização.
 - **Processo de Adoção Simplificado:** Um fluxo intuitivo para interessados em adotar, com formulários e orientações claras.
 - **Gerenciamento de Animais (para administradores/ONGs):** Ferramentas para adicionar, editar e remover animais da plataforma.
 
@@ -20,9 +19,8 @@ Este é o projeto de adoção de animais de estimação desenvolvido como parte 
 
 ## 🚀 Como Começar (Para Usuários Finais)
 
-1. **Acesse a Plataforma:** Visite [URL_DA_PLATAFORMA_AQUI] (em breve!).
-2. **Navegue pelos Animais:** Explore os perfis dos animais disponíveis.
-3. **Entre em Contato:** Se encontrar um amigo peludo que te encante, siga as instruções no perfil dele para iniciar o processo de adoção.
+1. **Navegue pelos Animais:** Explore os perfis dos animais disponíveis.
+2. **Entre em Contato:** Se encontrar um amigo peludo que te encante, siga as instruções no perfil dele para iniciar o processo de adoção.
 
 ---
 
@@ -99,14 +97,5 @@ Adoramos contribuições! Se você tem ideias, encontrou um bug ou quer adiciona
 
 ---
 
-## 📄 Licença
 
-Este projeto está licenciado sob a Licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
----
-
-## 📞 Contato
-
-Para dúvidas ou informações adicionais, entre em contato com a equipe do projeto Peludinhos da UFOPA.
-
-**Desenvolvido com ❤️ pela UFOPA.**
+**Desenvolvido por Endrio.**
