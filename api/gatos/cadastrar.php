@@ -1,6 +1,6 @@
 <?php
 // api/gatos/cadastrar.php
-require_once '../../config/auth_check.php';
+//require_once '../../config/auth_check.php';
 require_once '../../config/database.php';
 
 $response = ['success' => false, 'message' => ''];

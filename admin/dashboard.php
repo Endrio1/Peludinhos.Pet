@@ -17,28 +17,22 @@
             </ul>
         </aside>
         <main class="admin-content">
-            <h1>Pedidos de Adoção Pendentes</h1>
-            <table id="pedidos-table">
+            <h1>Pedidos de Adoção</h1> <table id="pedidos-table">
                 <thead>
                     <tr>
                         <th>Gato</th>
                         <th>Interessado</th>
                         <th>Contato</th>
-                        <th>Data</th>
-                        <th>Status</th>
+                        <th>Data do Pedido</th> <th>Status</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="pedidos-table-body">
                     </tbody>
             </table>
         </main>
     </div>
-    <script src="auth.js"></script>
-    <script>
-        // Lógica para carregar os pedidos na tabela
-        // e para os botões de Aprovar/Rejeitar
-        // A lógica completa estaria em um arquivo como `admin/dashboard.js`
-    </script>
+    <script src="../admin/auth.js"></script>
+    <script src="../admin/dashboard.js"></script> 
 </body>
 </html>

@@ -1,6 +1,6 @@
 <?php
 // api/gatos/listar_todos.php
-require_once '../../config/auth_check.php'; // VERIFICA O TOKEN
+//require_once '../../config/auth_check.php'; // VERIFICA O TOKEN
 require_once '../../config/database.php';
 
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
