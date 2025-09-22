@@ -1,38 +1,32 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <title>Dashboard - Pedidos de Adoção</title>
-    <link rel="stylesheet" href="../assets/css/admin.css">
-</head>
-<body>
-    <div class="admin-wrapper">
-        <aside class="sidebar">
-            <h3>Admin Peludinhos</h3>
-            <ul>
-                <li class="active"><a href="dashboard.php">Pedidos de Adoção</a></li>
-                <li><a href="gerenciar-gatos.php">Gerenciar Gatos</a></li>
-                <li><a href="perfil.php">Meu Perfil</a></li>
-                <li><a href="#" id="logout-btn">Sair</a></li>
-            </ul>
-        </aside>
-        <main class="admin-content">
-            <h1>Pedidos de Adoção</h1> <table id="pedidos-table">
-                <thead>
-                    <tr>
-                        <th>Gato</th>
-                        <th>Interessado</th>
-                        <th>Contato</th>
-                        <th>Data do Pedido</th> <th>Status</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody id="pedidos-table-body">
-                    </tbody>
-            </table>
-        </main>
+<?php
+require __DIR__ . '/../includes/db.php';
+require __DIR__ . '/../includes/auth.php';
+require __DIR__ . '/../includes/flash.php';
+
+$payload = admin_protect();
+if (!$payload) { header('Location: /testes/admin/login.php'); exit; }
+
+?>
+<!doctype html><html lang="pt-br"><head><meta charset="utf-8"><title>Dashboard Admin</title>
+<link rel="stylesheet" href="/testes/assets/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet"></head><body class="page">
+  <header class="site-header">
+    <div class="container topbar">
+      <div class="brand"><div class="logo"></div><h1>Painel do Administrador</h1></div>
+      <div><a class="btn" href="/testes/admin/logout.php">Sair</a></div>
     </div>
-    <script src="../admin/auth.js"></script>
-    <script src="../admin/dashboard.js"></script> 
-</body>
-</html>
+  </header>
+  <main class="main">
+    <div class="panel container">
+      <?php echo flash_render(); ?>
+      <h2>Bem-vindo, <?php echo htmlspecialchars($payload['name'] ?? $payload['email']); ?></h2>
+      <div class="grid" style="margin-top:16px">
+        <a class="card" href="/testes/admin/cats.php"><h3>Gerenciar Gatos</h3><p class="muted">Adicionar, editar e remover</p></a>
+        <a class="card" href="/testes/admin/requests.php"><h3>Pedidos de Adoção</h3><p class="muted">Processar solicitações</p></a>
+        <a class="card" href="/testes/admin/profile.php"><h3>Meu Perfil</h3><p class="muted">Atualizar dados e senha</p></a>
+      </div>
+    </div>
+  </main>
+</body></html>

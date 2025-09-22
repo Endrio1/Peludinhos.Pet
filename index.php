@@ -1,59 +1,75 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<?php
+require __DIR__ . '/includes/db.php';
+require __DIR__ . '/includes/flash.php';
+
+// Buscar gatos disponíveis
+$stmt = $pdo->prepare("SELECT id, name, age, breed, sex, description, image_path FROM cats WHERE status = 'available' ORDER BY created_at DESC");
+$stmt->execute();
+$cats = $stmt->fetchAll();
+?>
+<!doctype html>
+<html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Peludinhos da UFOPA - Adoção de Gatos</title>
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>Peludinhos UFOPA - Adoção de Gatos</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="/testes/assets/style.css">
 </head>
 <body>
+	<header class="site-header">
+		<div class="container topbar">
+			<div class="brand">
+				<div class="logo"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C10 2 6 4 6 8v5c0 4 4 7 6 7s6-3 6-7V8c0-4-4-6-6-6z" fill="#fff"/></svg></div>
+				<div>
+					<h1>Peludinhos UFOPA</h1>
+					<div class="sub">Adoção responsável de gatos</div>
+				</div>
+			</div>
+			<div>
+				<a class="btn" href="/testes/admin/login.php">Área do Administrador</a>
+			</div>
+		</div>
+	</header>
 
-    <header class="main-header">
-        <div class="container">
-            <h1>🐾 Peludinhos da UFOPA</h1>
-            <p>Encontre seu novo amigo de quatro patas!</p>
-        </div>
-    </header>
+	<main class="container">
+		<section class="hero">
+			<p class="muted">Conheça os gatinhos disponíveis para adoção. Clique em "Adotar" para enviar um pedido.</p>
+		</section>
 
-    <main class="container">
-        <h2>Gatinhos esperando por um lar</h2>
-        <div id="catalogo-gatos" class="catalogo">
-            </div>
-    </main>
+		<?php echo flash_render(); ?>
 
-    <footer class="main-footer">
-        <p>Projeto de Extensão da Universidade Federal do Oeste do Pará - UFOPA</p>
-    </footer>
-
-    <div id="modal-adocao" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2>Formulário de Adoção</h2>
-            <p>Você está prestes a iniciar o processo de adoção para <strong id="modal-nome-gato"></strong>!</p>
-            <form id="form-adocao">
-                <input type="hidden" id="gato_id" name="gato_id">
-                <div class="form-group">
-                    <label for="nome_interessado">Seu Nome Completo</label>
-                    <input type="text" id="nome_interessado" name="nome_interessado" required>
-                </div>
-                <div class="form-group">
-                    <label for="email_interessado">Seu E-mail</label>
-                    <input type="email" id="email_interessado" name="email_interessado" required>
-                </div>
-                <div class="form-group">
-                    <label for="telefone_interessado">Seu Telefone (WhatsApp)</label>
-                    <input type="tel" id="telefone_interessado" name="telefone_interessado" required>
-                </div>
-                <div class="form-group">
-                    <label for="mensagem">Por que você quer adotar este gatinho?</label>
-                    <textarea id="mensagem" name="mensagem" rows="4"></textarea>
-                </div>
-                <button type="submit" class="btn-submit">Enviar Pedido</button>
-            </form>
-        </div>
-    </div>
-
-    <script src="assets/js/main.js"></script>
+		<section class="card-area">
+			<?php if (empty($cats)): ?>
+				<div class="card">Nenhum gato disponível no momento.</div>
+			<?php else: ?>
+				<div class="grid">
+				<?php foreach($cats as $cat): ?>
+					<article class="card">
+						<div class="thumb">
+							<?php if (!empty($cat['image_path']) && file_exists(__DIR__ . '/' . $cat['image_path'])): ?>
+								<img src="/<?php echo ltrim($cat['image_path'], '/'); ?>" alt="<?php echo htmlspecialchars($cat['name']); ?>">
+							<?php else: ?>
+								<img src="/testes/assets/placeholder.svg" alt="placeholder">
+							<?php endif; ?>
+						</div>
+						<div class="meta">
+							<div>
+								<div class="name"><?php echo htmlspecialchars($cat['name']); ?></div>
+								<div class="sub"><?php echo htmlspecialchars($cat['breed'] ?? 'Sem raça definida'); ?> • <?php echo htmlspecialchars($cat['age'] ?? 'idade desconhecida'); ?></div>
+							</div>
+							<div class="actions">
+								<a class="btn" href="/testes/adopt.php?cat_id=<?php echo $cat['id']; ?>">Adotar</a>
+							</div>
+						</div>
+						<p class="muted"><?php echo nl2br(htmlspecialchars(substr($cat['description'] ?? '', 0, 140))); ?></p>
+					</article>
+				<?php endforeach; ?>
+				</div>
+			<?php endif; ?>
+		</section>
+	</main>
 </body>
 </html>
