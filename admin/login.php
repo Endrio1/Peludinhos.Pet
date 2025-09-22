@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($token) {
       admin_set_cookie($token);
       flash_set('Login efetuado com sucesso.');
-      header('Location: /testes/admin/dashboard.php');
+  header('Location: dashboard.php');
       exit;
     } else {
       $error = 'Credenciais inválidas.';
@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 <!doctype html>
 <html lang="pt-br"><head><meta charset="utf-8"><title>Login Admin</title>
-<link rel="stylesheet" href="/testes/assets/style.css"></head><body class="page">
+<link rel="stylesheet" href="../assets/style.css"></head><body class="page">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <div><label>Senha<br><input type="password" name="password" required></label></div>
           <div style="margin-top:12px"><button class="btn">Entrar</button></div>
         </form>
-        <p class="muted">Se não houver administrador, crie um em <a href="/testes/admin/register.php">Registrar Admin</a></p>
+  <p class="muted">Se não houver administrador, crie um em <a href="register.php">Registrar Admin</a></p>
       </div>
     </div>
   </main>

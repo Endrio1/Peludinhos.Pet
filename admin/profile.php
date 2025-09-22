@@ -4,7 +4,7 @@ require __DIR__ . '/../includes/auth.php';
 require __DIR__ . '/../includes/flash.php';
 require __DIR__ . '/../includes/csrf.php';
 $payload = admin_protect();
-if (!$payload) { header('Location: /testes/admin/login.php'); exit; }
+if (!$payload) { header('Location: login.php'); exit; }
 
 $adminId = $payload['sub'];
 $stmt = $pdo->prepare('SELECT id, name, email FROM admins WHERE id = :id');
@@ -50,14 +50,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 ?>
 <!doctype html><html lang="pt-br"><head><meta charset="utf-8"><title>Meu Perfil</title>
-<link rel="stylesheet" href="/testes/assets/style.css">
+<link rel="stylesheet" href="../assets/style.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet"></head><body class="page">
   <header class="site-header">
     <div class="container topbar">
       <div class="brand"><div class="logo"></div><h1>Meu Perfil</h1></div>
-      <div><a class="btn" href="/testes/admin/dashboard.php">Voltar</a></div>
+  <div><a class="btn" href="dashboard.php">Voltar</a></div>
     </div>
   </header>
   <main class="main">

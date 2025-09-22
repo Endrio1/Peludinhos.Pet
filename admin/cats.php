@@ -5,7 +5,7 @@ require __DIR__ . '/../includes/auth.php';
 require __DIR__ . '/../includes/flash.php';
 require __DIR__ . '/../includes/csrf.php';
 $payload = admin_protect();
-if (!$payload) { header('Location: /testes/admin/login.php'); exit; }
+if (!$payload) { header('Location: login.php'); exit; }
 
 // criar novo gato com upload seguro
 $errors = [];
@@ -53,21 +53,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $stmt = $pdo->prepare('INSERT INTO cats (name, age, breed, description, image_path) VALUES (:name,:age,:breed,:desc,:image)');
     $stmt->execute([':name'=>$name,':age'=>$age,':breed'=>$breed,':desc'=>$desc,':image'=>$image_path]);
     flash_set('Gato criado com sucesso.');
-    header('Location: /testes/admin/cats.php'); exit;
+  header('Location: cats.php'); exit;
   }
 }
 
 $cats = $pdo->query('SELECT * FROM cats ORDER BY created_at DESC')->fetchAll();
 ?>
 <!doctype html><html lang="pt-br"><head><meta charset="utf-8"><title>Gerenciar Gatos</title>
-<link rel="stylesheet" href="/testes/assets/style.css">
+<link rel="stylesheet" href="../assets/style.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet"></head><body class="page">
   <header class="site-header">
     <div class="container topbar">
       <div class="brand"><div class="logo"></div><h1>Gerenciar Gatos</h1></div>
-      <div><a class="btn" href="/testes/admin/dashboard.php">Voltar</a></div>
+  <div><a class="btn" href="dashboard.php">Voltar</a></div>
     </div>
   </header>
   <main class="main">
@@ -92,7 +92,7 @@ $cats = $pdo->query('SELECT * FROM cats ORDER BY created_at DESC')->fetchAll();
         <h3>Lista de gatos</h3>
         <div class="grid">
           <?php foreach($cats as $c): ?>
-            <a class="card" href="/testes/admin/cats_edit.php?id=<?php echo $c['id']; ?>">
+            <a class="card" href="cats_edit.php?id=<?php echo $c['id']; ?>">
               <h4><?php echo htmlspecialchars($c['name']); ?> <small class="muted">(<?php echo htmlspecialchars($c['status']); ?>)</small></h4>
               <p class="muted"><?php echo htmlspecialchars($c['breed'] ?? ''); ?> • <?php echo htmlspecialchars($c['age'] ?? ''); ?></p>
               <p><?php echo nl2br(htmlspecialchars(substr($c['description'] ?? '',0,120))); ?></p>

@@ -4,10 +4,10 @@ require __DIR__ . '/../includes/auth.php';
 require __DIR__ . '/../includes/flash.php';
 require __DIR__ . '/../includes/csrf.php';
 $payload = admin_protect();
-if (!$payload) { header('Location: /testes/admin/login.php'); exit; }
+if (!$payload) { header('Location: login.php'); exit; }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['action']) && !empty($_POST['id'])) {
-  if (!csrf_check()) { flash_set('Token CSRF inválido.', 'error'); header('Location: /testes/admin/requests.php'); exit; }
+  if (!csrf_check()) { flash_set('Token CSRF inválido.', 'error'); header('Location: requests.php'); exit; }
     $id = (int)$_POST['id'];
     if ($_POST['action'] === 'approve') {
         // marcar request como approved e marcar cat como adopted
@@ -21,20 +21,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['action']) && !empty(
         $pdo->prepare('UPDATE adoption_requests SET status = "rejected" WHERE id = :id')->execute([':id'=>$id]);
     flash_set('Pedido rejeitado.');
     }
-    header('Location: /testes/admin/requests.php'); exit;
+  header('Location: requests.php'); exit;
 }
 
 $requests = $pdo->query('SELECT r.*, c.name as cat_name FROM adoption_requests r JOIN cats c ON r.cat_id = c.id ORDER BY r.created_at DESC')->fetchAll();
 ?>
 <!doctype html><html lang="pt-br"><head><meta charset="utf-8"><title>Gerenciar Pedidos</title>
-<link rel="stylesheet" href="/testes/assets/style.css">
+<link rel="stylesheet" href="../assets/style.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet"></head><body class="page">
   <header class="site-header">
     <div class="container topbar">
       <div class="brand"><div class="logo"></div><h1>Pedidos de Adoção</h1></div>
-      <div><a class="btn" href="/testes/admin/dashboard.php">Voltar</a></div>
+  <div><a class="btn" href="dashboard.php">Voltar</a></div>
     </div>
   </header>
   <main class="main">

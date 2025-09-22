@@ -6,7 +6,7 @@ require __DIR__ . '/../includes/csrf.php';
 $stmt = $pdo->query('SELECT COUNT(*) as c FROM admins');
 $count = $stmt->fetchColumn();
 if ($count > 0) {
-    echo 'Administrador já existe. <a href="/testes/admin/login.php">Entrar</a>'; exit;
+  echo 'Administrador já existe. <a href="login.php">Entrar</a>'; exit;
 }
 
 $errors = [];
@@ -24,13 +24,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $pdo->prepare('INSERT INTO admins (name, email, password_hash) VALUES (:name, :email, :hash)');
         $stmt->execute([':name'=>$name,':email'=>$email,':hash'=>$hash]);
     flash_set('Administrador criado com sucesso. Faça login.');
-    header('Location: /testes/admin/login.php'); exit;
+  header('Location: login.php'); exit;
     }
   }
 }
 ?>
 <!doctype html><html lang="pt-br"><head><meta charset="utf-8"><title>Registrar Admin</title>
-<link rel="stylesheet" href="/testes/assets/style.css">
+<link rel="stylesheet" href="../assets/style.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet"></head><body class="page">

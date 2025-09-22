@@ -3,16 +3,18 @@ require __DIR__ . '/../includes/db.php';
 require __DIR__ . '/../includes/auth.php';
 require __DIR__ . '/../includes/csrf.php';
 
+// debug removed for production
+
 $payload = admin_protect();
-if (!$payload) { header('Location: /testes/admin/login.php'); exit; }
+if (!$payload) { header('Location: login.php'); exit; }
 
 $id = $_GET['id'] ?? null;
-if (!$id) { header('Location: /testes/admin/cats.php'); exit; }
+if (!$id) { header('Location: cats.php'); exit; }
 
 $stmt = $pdo->prepare('SELECT * FROM cats WHERE id = :id');
 $stmt->execute([':id' => $id]);
 $cat = $stmt->fetch();
-if (!$cat) { header('Location: /testes/admin/cats.php'); exit; }
+if (!$cat) { header('Location: cats.php'); exit; }
 
 $errors = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -23,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             @unlink(__DIR__ . '/../' . $cat['image_path']);
         }
         $pdo->prepare('DELETE FROM cats WHERE id = :id')->execute([':id' => $id]);
-        header('Location: /testes/admin/cats.php'); exit;
+  header('Location: cats.php'); exit;
     }
 
     // update
@@ -35,54 +37,77 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!$name) $errors[] = 'Nome é obrigatório.';
 
-    // tratar upload de nova imagem
-    if (!empty($_FILES['image']) && $_FILES['image']['error'] !== UPLOAD_ERR_NO_FILE) {
-        $f = $_FILES['image'];
-        if ($f['error'] !== UPLOAD_ERR_OK) { $errors[] = 'Erro no upload da imagem.'; }
-        else {
-            $maxBytes = 2 * 1024 * 1024;
-            if ($f['size'] > $maxBytes) { $errors[] = 'Imagem muito grande (máx 2MB).'; }
-            $finfo = finfo_open(FILEINFO_MIME_TYPE);
-            $mime = finfo_file($finfo, $f['tmp_name']);
-            finfo_close($finfo);
-            $allowed = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
-            if (!isset($allowed[$mime])) { $errors[] = 'Tipo de imagem não permitido.'; }
-            if (empty($errors)) {
-                $ext = $allowed[$mime];
-                $nameHash = bin2hex(random_bytes(8));
-                $targetDir = __DIR__ . '/../uploads/cats';
-                if (!is_dir($targetDir)) mkdir($targetDir, 0755, true);
-                $filename = sprintf('%s.%s', $nameHash, $ext);
-                $dest = $targetDir . '/' . $filename;
-                if (!move_uploaded_file($f['tmp_name'], $dest)) { $errors[] = 'Falha ao mover o arquivo.'; }
-                else {
-                    // apagar imagem antiga
-                    if (!empty($cat['image_path']) && file_exists(__DIR__ . '/../' . $cat['image_path'])) {
-                        @unlink(__DIR__ . '/../' . $cat['image_path']);
-                    }
-                    $cat['image_path'] = 'uploads/cats/' . $filename;
-                }
+  // tratar upload de nova imagem (com debug e fallback)
+  if (!empty($_FILES['image']) && $_FILES['image']['error'] !== UPLOAD_ERR_NO_FILE) {
+  $f = $_FILES['image'];
+  if ($f['error'] !== UPLOAD_ERR_OK) {
+      $errMap = [
+        UPLOAD_ERR_INI_SIZE => 'Arquivo maior que upload_max_filesize',
+        UPLOAD_ERR_FORM_SIZE => 'Arquivo maior que post_max_size',
+        UPLOAD_ERR_PARTIAL => 'Upload parcial',
+        UPLOAD_ERR_NO_FILE => 'Nenhum arquivo enviado',
+        UPLOAD_ERR_NO_TMP_DIR => 'Pasta temporária ausente',
+        UPLOAD_ERR_CANT_WRITE => 'Falha ao escrever no disco',
+        UPLOAD_ERR_EXTENSION => 'Upload bloqueado por extensão',
+      ];
+  $errors[] = 'Erro no upload da imagem: ' . ($errMap[$f['error']] ?? 'código ' . $f['error']);
+    } else {
+      $maxBytes = 2 * 1024 * 1024;
+      if ($f['size'] > $maxBytes) { $errors[] = 'Imagem muito grande (máx 2MB).'; }
+      $finfo = finfo_open(FILEINFO_MIME_TYPE);
+      $mime = finfo_file($finfo, $f['tmp_name']);
+      finfo_close($finfo);
+      $allowed = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
+      if (!isset($allowed[$mime])) { $errors[] = 'Tipo de imagem não permitido. Detected: '.$mime; }
+      if (empty($errors)) {
+        $ext = $allowed[$mime];
+        $nameHash = bin2hex(random_bytes(8));
+        $targetDir = __DIR__ . '/../uploads/cats';
+        if (!is_dir($targetDir)) mkdir($targetDir, 0755, true);
+        $filename = sprintf('%s.%s', $nameHash, $ext);
+        $dest = $targetDir . '/' . $filename;
+        if (!is_uploaded_file($f['tmp_name'])) {
+          $errors[] = 'Arquivo temporário inválido.';
+        } elseif (!move_uploaded_file($f['tmp_name'], $dest)) {
+          // registrar mais informações e tentar fallback com copy()
+          $perm = is_dir($targetDir) ? substr(sprintf('%o', fileperms($targetDir)), -4) : 'no-dir';
+          if (!@copy($f['tmp_name'], $dest)) {
+            $errors[] = 'Falha ao mover o arquivo. Verifique permissões do diretório uploads e upload_tmp_dir.';
+            // copy fallback failed
+          } else {
+            if (!empty($cat['image_path']) && file_exists(__DIR__ . '/../' . $cat['image_path'])) {
+              @unlink(__DIR__ . '/../' . $cat['image_path']);
             }
+            $cat['image_path'] = 'uploads/cats/' . $filename;
+          }
+        } else {
+          // sucesso
+          if (!empty($cat['image_path']) && file_exists(__DIR__ . '/../' . $cat['image_path'])) {
+            @unlink(__DIR__ . '/../' . $cat['image_path']);
+          }
+          $cat['image_path'] = 'uploads/cats/' . $filename;
         }
+      }
     }
+  }
 
     if (empty($errors)) {
         $stmt = $pdo->prepare('UPDATE cats SET name = :name, age = :age, breed = :breed, description = :desc, image_path = :image_path, status = :status WHERE id = :id');
         $stmt->execute([':name'=>$name,':age'=>$age,':breed'=>$breed,':desc'=>$desc,':image_path'=>$cat['image_path'],':status'=>$status,':id'=>$id]);
-        header('Location: /testes/admin/cats.php'); exit;
+  header('Location: cats.php'); exit;
     }
 }
 
 ?>
 <!doctype html><html lang="pt-br"><head><meta charset="utf-8"><title>Editar Gato</title>
-<link rel="stylesheet" href="/testes/assets/style.css">
+                <link rel="stylesheet" href="../assets/style.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet"></head><body class="page">
   <header class="site-header">
     <div class="container topbar">
       <div class="brand"><div class="logo"></div><h1>Editar Gato</h1></div>
-      <div><a class="btn" href="/testes/admin/cats.php">Voltar</a></div>
+  <div><a class="btn" href="cats.php">Voltar</a></div>
     </div>
   </header>
   <main class="main">
@@ -100,7 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <div>
             <p>Imagem atual:</p>
             <?php if (!empty($cat['image_path']) && file_exists(__DIR__ . '/../' . $cat['image_path'])): ?>
-              <img src="/<?php echo ltrim($cat['image_path'], '/'); ?>" style="max-width:200px;display:block">
+              <img src="<?php echo htmlspecialchars('../' . ltrim($cat['image_path'], '/')); ?>" style="max-width:200px;display:block">
             <?php else: ?>
               <p class="muted">Sem imagem</p>
             <?php endif; ?>

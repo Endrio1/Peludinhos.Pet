@@ -16,7 +16,7 @@ $cats = $stmt->fetchAll();
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="/testes/assets/style.css">
+	<link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 	<header class="site-header">
@@ -29,7 +29,7 @@ $cats = $stmt->fetchAll();
 				</div>
 			</div>
 			<div>
-				<a class="btn" href="/testes/admin/login.php">Área do Administrador</a>
+				<a class="btn" href="admin/login.php">Área do Administrador</a>
 			</div>
 		</div>
 	</header>
@@ -50,9 +50,9 @@ $cats = $stmt->fetchAll();
 					<article class="card">
 						<div class="thumb">
 							<?php if (!empty($cat['image_path']) && file_exists(__DIR__ . '/' . $cat['image_path'])): ?>
-								<img src="/<?php echo ltrim($cat['image_path'], '/'); ?>" alt="<?php echo htmlspecialchars($cat['name']); ?>">
+								<img src="<?php echo htmlspecialchars($cat['image_path']); ?>" alt="<?php echo htmlspecialchars($cat['name']); ?>">
 							<?php else: ?>
-								<img src="/testes/assets/placeholder.svg" alt="placeholder">
+								<img src="assets/placeholder.svg" alt="placeholder">
 							<?php endif; ?>
 						</div>
 						<div class="meta">
@@ -61,7 +61,7 @@ $cats = $stmt->fetchAll();
 								<div class="sub"><?php echo htmlspecialchars($cat['breed'] ?? 'Sem raça definida'); ?> • <?php echo htmlspecialchars($cat['age'] ?? 'idade desconhecida'); ?></div>
 							</div>
 							<div class="actions">
-								<a class="btn" href="/testes/adopt.php?cat_id=<?php echo $cat['id']; ?>">Adotar</a>
+								<a class="btn" href="adopt.php?cat_id=<?php echo $cat['id']; ?>">Adotar</a>
 							</div>
 						</div>
 						<p class="muted"><?php echo nl2br(htmlspecialchars(substr($cat['description'] ?? '', 0, 140))); ?></p>

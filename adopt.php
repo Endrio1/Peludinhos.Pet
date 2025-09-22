@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ]);
 
     flash_set('Pedido de adoção enviado com sucesso. Obrigado!');
-    header('Location: /testes/index.php');
+  header('Location: index.php');
     exit;
   }
 }
@@ -49,11 +49,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/testes/assets/style.css">
+  <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
   <div class="container">
-    <a href="/testes/index.php">&larr; Voltar</a>
+  <a href="index.php">&larr; Voltar</a>
     <h2>Pedido de Adoção</h2>
     <?php if ($cat): ?>
       <p>Você está pedindo adoção para: <strong><?php echo htmlspecialchars($cat['name']); ?></strong></p>
