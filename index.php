@@ -17,6 +17,7 @@ $cats = $stmt->fetchAll();
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="assets/style.css">
+	<script src="assets/carousel.js" defer></script>
 </head>
 <body>
 	<header class="site-header">
@@ -28,7 +29,13 @@ $cats = $stmt->fetchAll();
 					<div class="sub">Adoção responsável de gatos</div>
 				</div>
 			</div>
-			<div>
+			<div class="header-actions">
+				<nav class="socials">
+					<a href="https://facebook.com" target="_blank" aria-label="Facebook">FB</a>
+					<a href="https://instagram.com" target="_blank" aria-label="Instagram">IG</a>
+					<a href="https://twitter.com" target="_blank" aria-label="Twitter">TW</a>
+				</nav>
+				<a class="btn secondary" href="donate.php">Doar</a>
 				<a class="btn" href="admin/login.php">Área do Administrador</a>
 			</div>
 		</div>
@@ -70,6 +77,61 @@ $cats = $stmt->fetchAll();
 				</div>
 			<?php endif; ?>
 		</section>
+
+		<!-- Benefits Section -->
+		<section class="benefits">
+			<h2>Por que adotar um animal resgatado?</h2>
+			<div class="grid benefits-grid">
+				<div class="card">
+					<h3>Salvar uma vida</h3>
+					<p class="muted">Ao adotar, você dá uma segunda chance a um animal que foi abandonado ou resgatado.</p>
+				</div>
+				<div class="card">
+					<h3>Adoção responsável</h3>
+					<p class="muted">Animais resgatados geralmente já estão vacinados e avaliados por profissionais.</p>
+				</div>
+				<div class="card">
+					<h3>Companhia e afeto</h3>
+					<p class="muted">Ganho de um amigo para a vida — benefícios para saúde mental e bem-estar.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- News Carousel -->
+		<section class="news">
+			<h2>Notícias e Atualizações</h2>
+			<div class="carousel" id="news-carousel" data-interval="5000">
+				<div class="slides">
+					<div class="slide">Proteção animal: novas leis em discussão que impactam adoções.</div>
+					<div class="slide">Evento de adoção neste sábado no campus — traga sua família!</div>
+					<div class="slide">Dicas de cuidados: como preparar sua casa para um novo gato.</div>
+				</div>
+				<div class="controls">
+					<button class="prev">‹</button>
+					<button class="next">›</button>
+				</div>
+			</div>
+		</section>
 	</main>
+
+	<footer class="site-footer">
+		<div class="container">
+			<div class="grid footer-grid">
+				<div>
+					<h4>Contato</h4>
+					<p class="muted">Email: contato@peludinhos.ufopa.br<br>Telefone: (94) 1234-5678</p>
+				</div>
+				<div>
+					<h4>Endereço</h4>
+					<p class="muted">Campus UFOPA — Santarém/PA<br>Bloco A, Sala 12</p>
+				</div>
+				<div>
+					<h4>Redes</h4>
+					<p><a href="https://instagram.com" target="_blank">Instagram</a> • <a href="https://facebook.com" target="_blank">Facebook</a></p>
+				</div>
+			</div>
+			<div class="muted" style="margin-top:12px;font-size:0.9rem">© Peludinhos UFOPA — Projeto de adoção responsável</div>
+		</div>
+	</footer>
 </body>
 </html>
