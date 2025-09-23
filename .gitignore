@@ -1,8 +1,0 @@
-# Ignora as imagens enviadas pelos usuarios
-uploads/
-#Mantem a pasta uploads no repositório, mantendo um arquivo placeholder chamado .gitkeep
-!uploads/.gitkeep
-# Ignora especificamente as imagens dentro de cats
-uploads/cats/
-.DS_Store
-tmp/

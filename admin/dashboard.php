@@ -23,9 +23,9 @@ if (!$payload) { header('Location: login.php'); exit; }
       <?php echo flash_render(); ?>
       <h2>Bem-vindo, <?php echo htmlspecialchars($payload['name'] ?? $payload['email']); ?></h2>
       <div class="grid" style="margin-top:16px">
-  <a class="card" href="cats.php"><h3>Gerenciar Gatos</h3><p class="muted">Adicionar, editar e remover</p></a>
-        <a class="card" href="/admin/requests.php"><h3>Pedidos de Adoção</h3><p class="muted">Processar solicitações</p></a>
-        <a class="card" href="/admin/profile.php"><h3>Meu Perfil</h3><p class="muted">Atualizar dados e senha</p></a>
+        <a class="card" href="cats.php"><h3>Gerenciar Gatos</h3><p class="muted">Adicionar, editar e remover</p></a>
+        <a class="card" href="requests.php"><h3>Pedidos de Adoção</h3><p class="muted">Processar solicitações</p></a>
+        <a class="card" href="profile.php"><h3>Meu Perfil</h3><p class="muted">Atualizar dados e senha</p></a>
       </div>
     </div>
   </main>
