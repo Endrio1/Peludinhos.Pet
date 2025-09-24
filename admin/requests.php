@@ -26,14 +26,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['action']) && !empty(
 
 $requests = $pdo->query('SELECT r.*, c.name as cat_name FROM adoption_requests r JOIN cats c ON r.cat_id = c.id ORDER BY r.created_at DESC')->fetchAll();
 ?>
-<!doctype html><html lang="pt-br"><head><meta charset="utf-8"><title>Gerenciar Pedidos</title>
+<!doctype html><html lang="pt-br"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0b57d0"><title>Gerenciar Pedidos</title>
 <link rel="stylesheet" href="../assets/style.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet"></head><body class="page">
   <header class="site-header">
     <div class="container topbar">
-      <div class="brand"><div class="logo"></div><h1>Pedidos de Adoção</h1></div>
+      <div class="brand"><div class="logo"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C10 2 6 4 6 8v5c0 4 4 7 6 7s6-3 6-7V8c0-4-4-6-6-6z" fill="#fff"/></svg></div><h1>Pedidos de Adoção</h1></div>
   <div><a class="btn" href="dashboard.php">Voltar</a></div>
     </div>
   </header>
@@ -58,7 +58,7 @@ $requests = $pdo->query('SELECT r.*, c.name as cat_name FROM adoption_requests r
               <form method="post" style="display:inline">
                 <?php echo csrf_field(); ?>
                 <input type="hidden" name="id" value="<?php echo $r['id']; ?>">
-                <button class="btn" name="action" value="reject" style="background:#d33">Rejeitar</button>
+                <button class="btn danger" name="action" value="reject">Rejeitar</button>
               </form>
             </div>
           </div>

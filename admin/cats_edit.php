@@ -17,6 +17,8 @@ $cat = $stmt->fetch();
 if (!$cat) { header('Location: cats.php'); exit; }
 
 $errors = [];
+// calcular base do projeto para montar URLs root-relative estáveis (ex.: /peludinhos/Peludinhos.Pet)
+$projectBase = rtrim(dirname(dirname($_SERVER['SCRIPT_NAME'] ?? '')), '/');
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if (!csrf_check()) { $errors[] = 'Token CSRF inválido.'; }
     if (!empty($_POST['action']) && $_POST['action'] === 'delete') {
@@ -99,14 +101,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 ?>
-<!doctype html><html lang="pt-br"><head><meta charset="utf-8"><title>Editar Gato</title>
+<!doctype html><html lang="pt-br"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0b57d0"><title>Editar Gato</title>
                 <link rel="stylesheet" href="../assets/style.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet"></head><body class="page">
   <header class="site-header">
     <div class="container topbar">
-      <div class="brand"><div class="logo"></div><h1>Editar Gato</h1></div>
+      <div class="brand">
+        <div class="logo"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C10 2 6 4 6 8v5c0 4 4 7 6 7s6-3 6-7V8c0-4-4-6-6-6z" fill="#fff"/></svg></div>
+        <h1>Editar Gato</h1>
+      </div>
   <div><a class="btn" href="cats.php">Voltar</a></div>
     </div>
   </header>
@@ -116,29 +121,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <div class="form-wrap card">
         <form method="post" enctype="multipart/form-data">
           <?php echo csrf_field(); ?>
-          <div><label>Nome<br><input type="text" name="name" value="<?php echo htmlspecialchars($cat['name']); ?>" required></label></div>
-          <div><label>Raça<br><input type="text" name="breed" value="<?php echo htmlspecialchars($cat['breed']); ?>"></label></div>
-          <div><label>Idade<br><input type="text" name="age" value="<?php echo htmlspecialchars($cat['age']); ?>"></label></div>
-          <div><label>Status<br>
-            <select name="status"><option value="available" <?php echo $cat['status']=='available'?'selected':''; ?>>available</option><option value="adopted" <?php echo $cat['status']=='adopted'?'selected':''; ?>>adopted</option></select>
-          </label></div>
-          <div>
+          <div class="form-grid">
+            <div><label>Nome<br><input type="text" name="name" value="<?php echo htmlspecialchars($cat['name']); ?>" required></label></div>
+            <div><label>Raça<br><input type="text" name="breed" value="<?php echo htmlspecialchars($cat['breed']); ?>"></label></div>
+            <div><label>Idade<br><input type="text" name="age" value="<?php echo htmlspecialchars($cat['age']); ?>"></label></div>
+            <div><label>Status<br>
+              <select name="status"><option value="available" <?php echo $cat['status']=='available'?'selected':''; ?>>available</option><option value="adopted" <?php echo $cat['status']=='adopted'?'selected':''; ?>>adopted</option></select>
+            </label></div>
+          </div>
+          <div style="margin-top:8px">
             <p>Imagem atual:</p>
             <?php if (!empty($cat['image_path']) && file_exists(__DIR__ . '/../' . $cat['image_path'])): ?>
-              <img src="<?php echo htmlspecialchars('../' . ltrim($cat['image_path'], '/')); ?>" style="max-width:200px;display:block">
+              <?php $imgUrl = $projectBase . '/' . ltrim($cat['image_path'], '/'); ?>
+              <img src="<?php echo htmlspecialchars($imgUrl); ?>" alt="Pré-visualização da imagem atual" style="max-width:220px;display:block;border-radius:8px" loading="lazy" decoding="async">
             <?php else: ?>
               <p class="muted">Sem imagem</p>
             <?php endif; ?>
             <label>Trocar imagem (opcional)<br><input type="file" name="image" accept="image/*"></label>
           </div>
           <div><label>Descrição<br><textarea name="description"><?php echo htmlspecialchars($cat['description']); ?></textarea></label></div>
-          <div style="margin-top:12px"><button class="btn">Salvar</button></div>
+          <div class="actions" style="margin-top:12px"><button class="btn">Salvar</button></div>
         </form>
 
         <form method="post" onsubmit="return confirm('Confirma exclusão deste gato?');" style="margin-top:12px">
           <?php echo csrf_field(); ?>
           <input type="hidden" name="action" value="delete">
-          <button class="btn" style="background:#d33">Excluir Gato</button>
+          <button class="btn danger">Excluir Gato</button>
         </form>
       </div>
     </div>

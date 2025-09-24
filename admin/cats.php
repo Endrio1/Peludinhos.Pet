@@ -59,14 +59,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
 $cats = $pdo->query('SELECT * FROM cats ORDER BY created_at DESC')->fetchAll();
 ?>
-<!doctype html><html lang="pt-br"><head><meta charset="utf-8"><title>Gerenciar Gatos</title>
+<!doctype html><html lang="pt-br"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0b57d0"><title>Gerenciar Gatos</title>
 <link rel="stylesheet" href="../assets/style.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet"></head><body class="page">
   <header class="site-header">
     <div class="container topbar">
-      <div class="brand"><div class="logo"></div><h1>Gerenciar Gatos</h1></div>
+      <div class="brand"><div class="logo"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C10 2 6 4 6 8v5c0 4 4 7 6 7s6-3 6-7V8c0-4-4-6-6-6z" fill="#fff"/></svg></div><h1>Gerenciar Gatos</h1></div>
   <div><a class="btn" href="dashboard.php">Voltar</a></div>
     </div>
   </header>
@@ -79,10 +79,12 @@ $cats = $pdo->query('SELECT * FROM cats ORDER BY created_at DESC')->fetchAll();
         <form method="post" enctype="multipart/form-data">
           <input type="hidden" name="action" value="create">
           <?php echo csrf_field(); ?>
-          <div><label>Nome<br><input type="text" name="name" required></label></div>
-          <div><label>Raça<br><input type="text" name="breed"></label></div>
-          <div><label>Idade<br><input type="text" name="age"></label></div>
-          <div><label>Imagem (envie um arquivo)<br><input type="file" name="image" accept="image/*"></label></div>
+          <div class="form-grid">
+            <div><label>Nome<br><input type="text" name="name" required></label></div>
+            <div><label>Raça<br><input type="text" name="breed"></label></div>
+            <div><label>Idade<br><input type="text" name="age"></label></div>
+          </div>
+          <div style="margin-top:8px"><label>Imagem (envie um arquivo)<br><input type="file" name="image" accept="image/*"></label></div>
           <div><label>Descrição<br><textarea name="description"></textarea></label></div>
           <div style="margin-top:12px"><button class="btn">Criar</button></div>
         </form>

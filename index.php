@@ -13,11 +13,13 @@ $cats = $stmt->fetchAll();
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 	<title>Peludinhos UFOPA - Adoção de Gatos</title>
+	<meta name="theme-color" content="#0b57d0">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="assets/style.css">
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&family=Fredoka+One&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="assets/style.css?v=1.1">
 	<script src="assets/carousel.js" defer></script>
+	
 </head>
 <body>
 	<header class="site-header">
@@ -28,14 +30,20 @@ $cats = $stmt->fetchAll();
 					<h1>Peludinhos UFOPA</h1>
 					<div class="sub">Adoção responsável de gatos</div>
 				</div>
+				<nav class="socials" aria-label="Redes Sociais">
+					<a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+						<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 12.07C22 6.48 17.52 2 11.93 2S2 6.48 2 12.07c0 4.99 3.66 9.13 8.44 9.93v-7.03H8.07v-2.9h2.37V9.41c0-2.34 1.4-3.63 3.55-3.63 1.03 0 2.1.18 2.1.18v2.3h-1.17c-1.15 0-1.51.72-1.51 1.46v1.75h2.57l-.41 2.9h-2.16V22c4.78-.8 8.44-4.94 8.44-9.93z" fill="#fff"/></svg>
+					</a>
+					<a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+						<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm5 6.2A4.8 4.8 0 1 0 16.8 13 4.8 4.8 0 0 0 12 8.2zm6.4-3.6a1.12 1.12 0 1 0 1.12 1.12A1.12 1.12 0 0 0 18.4 4.6z" fill="#fff"/></svg>
+					</a>
+					<a href="https://x.com" target="_blank" rel="noopener noreferrer" aria-label="X">
+						<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 7.5l-6.6 6.6L21 20.7 20.3 21l-6.6-6.6L7.1 21 6.4 20.3l6.6-6.6L6.4 7.1 7.1 6.4l6.6 6.6L20.3 6.4z" fill="#fff"/></svg>
+					</a>
+				</nav>
 			</div>
 			<div class="header-actions">
-				<nav class="socials">
-					<a href="https://facebook.com" target="_blank" aria-label="Facebook">FB</a>
-					<a href="https://instagram.com" target="_blank" aria-label="Instagram">IG</a>
-					<a href="https://twitter.com" target="_blank" aria-label="Twitter">TW</a>
-				</nav>
-				<a class="btn secondary" href="donate.php">Doar</a>
+				<a class="btn" href="donate.php">Doar</a>
 				<a class="btn" href="admin/login.php">Área do Administrador</a>
 			</div>
 		</div>
@@ -57,9 +65,9 @@ $cats = $stmt->fetchAll();
 					<article class="card">
 						<div class="thumb">
 							<?php if (!empty($cat['image_path']) && file_exists(__DIR__ . '/' . $cat['image_path'])): ?>
-								<img src="<?php echo htmlspecialchars($cat['image_path']); ?>" alt="<?php echo htmlspecialchars($cat['name']); ?>">
+								<img loading="lazy" decoding="async" src="<?php echo htmlspecialchars($cat['image_path']); ?>" alt="<?php echo htmlspecialchars($cat['name']); ?>">
 							<?php else: ?>
-								<img src="assets/placeholder.svg" alt="placeholder">
+								<img loading="lazy" decoding="async" src="assets/placeholder.svg" alt="placeholder">
 							<?php endif; ?>
 						</div>
 						<div class="meta">
@@ -100,15 +108,17 @@ $cats = $stmt->fetchAll();
 		<!-- News Carousel -->
 		<section class="news">
 			<h2>Notícias e Atualizações</h2>
-			<div class="carousel" id="news-carousel" data-interval="5000">
-				<div class="slides">
-					<div class="slide">Proteção animal: novas leis em discussão que impactam adoções.</div>
-					<div class="slide">Evento de adoção neste sábado no campus — traga sua família!</div>
-					<div class="slide">Dicas de cuidados: como preparar sua casa para um novo gato.</div>
-				</div>
-				<div class="controls">
-					<button class="prev">‹</button>
-					<button class="next">›</button>
+			<div class="carousel-box">
+				<div class="carousel" id="news-carousel" data-interval="5000">
+					<div class="slides">
+						<div class="slide">Proteção animal: novas leis em discussão que impactam adoções.</div>
+						<div class="slide">Evento de adoção neste sábado no campus — traga sua família!</div>
+						<div class="slide">Dicas de cuidados: como preparar sua casa para um novo gato.</div>
+					</div>
+					<div class="controls" aria-hidden="false">
+						<button class="prev" aria-label="Notícias anteriores">‹</button>
+						<button class="next" aria-label="Próximas notícias">›</button>
+					</div>
 				</div>
 			</div>
 		</section>
